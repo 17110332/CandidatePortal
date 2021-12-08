@@ -49,13 +49,18 @@ namespace CandidatePortal.Models
         public virtual DbSet<NhmRecruitDetailRequest> NhmRecruitDetailRequest { get; set; }
         public virtual DbSet<Language> Language { get; set; }
         public virtual DbSet<NhmAccountRequest> NhmAccountRequest { get; set; }
-        public virtual DbSet<NhmLogin> NhmLoginsRequest { get; set; }
+        public virtual DbSet<NhmLoginRequest> NhmLoginsRequest { get; set; }
         public virtual DbSet<NhmPhoto> NhmPhotosRequest { get; set; }
         public virtual DbSet<NhmProvince> NhmProvincesRequest { get; set; }
         public virtual DbSet<NhmRecruitRequest> NhmRecruitRequest { get; set; }
         public virtual DbSet<NhmTypeJobWorkingRequest> NhmTypeJobWorkingRequest { get; set; }
         public virtual DbSet<NhmValueList> NhmValueListsRequest { get; set; }
         public virtual DbSet<NhmWard> NhmWardsRequest { get; set; }
+
+        public virtual DbSet<ApplicantRequest> ApplicantRequest { get; set; }
+        public virtual DbSet<BaseRequest> BaseRequest { get; set; }
+
+        public virtual DbSet<ApplicantPersonalRequest> ApplicantPersonalRequest { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -80,7 +85,7 @@ namespace CandidatePortal.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.BirthDay).HasColumnType("datetime");
+                entity.Property(e => e.BirthDay);
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(20)
@@ -100,7 +105,7 @@ namespace CandidatePortal.Models
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.IDCardNo)
                     .HasMaxLength(20)
@@ -109,7 +114,7 @@ namespace CandidatePortal.Models
 
                 entity.Property(e => e.LastName)
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.Mobile)
                     .HasMaxLength(20)
@@ -131,7 +136,7 @@ namespace CandidatePortal.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.StreetName).IsUnicode(false);
+                entity.Property(e => e.StreetName).IsUnicode(true);
 
                 entity.Property(e => e.Username)
                     .HasMaxLength(20)
@@ -309,7 +314,7 @@ namespace CandidatePortal.Models
                 entity.HasKey(e => e.DistrictCode)
                     .HasName("PK__NHM_Dist__3D4E86AA2A4EA4B7");
 
-                entity.ToTable("NHM_Districts");
+                entity.ToTable("NhmDistricts");
 
                 entity.Property(e => e.DistrictCode)
                     .HasMaxLength(20)
@@ -465,7 +470,7 @@ namespace CandidatePortal.Models
 
             modelBuilder.Entity<NhmLogin>(entity =>
             {
-                entity.ToTable("NHM_Login");
+                entity.ToTable("NhmLogins");
 
                 entity.Property(e => e.ID).HasColumnName("ID");
 
@@ -513,7 +518,7 @@ namespace CandidatePortal.Models
                 entity.HasKey(e => e.ProvinceCode)
                     .HasName("PK__NHM_Prov__11D9FAD4B8AB34AC");
 
-                entity.ToTable("NHM_Provinces");
+                entity.ToTable("NhmProvinces");
 
                 entity.Property(e => e.ProvinceCode)
                     .HasMaxLength(20)
@@ -638,7 +643,7 @@ namespace CandidatePortal.Models
                 entity.HasKey(e => e.WardCode)
                     .HasName("PK__NHM_Ward__1A7FBFF144DC28DE");
 
-                entity.ToTable("NHM_Wards");
+                entity.ToTable("NhmWards");
 
                 entity.Property(e => e.WardCode)
                     .HasMaxLength(20)
