@@ -31,7 +31,7 @@ namespace CandidatePortal
                 options.AddPolicy("CorsApi",
                   builder => builder.WithOrigins("http://localhost:44344", "http://localhost:3000", 
                   "http://localhost:4000", "http://localhost:44328", "https://localhost:5001")
-                  .AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build());
+                  .AllowAnyHeader().AllowAnyMethod().AllowCredentials().AllowCredentials().Build());
             });
 
             services.Configure<FormOptions>(o =>
@@ -39,6 +39,9 @@ namespace CandidatePortal
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
+                o.MultipartHeadersLengthLimit = int.MaxValue;
+                o.MultipartHeadersCountLimit = int.MaxValue;
+                o.MultipartBoundaryLengthLimit = int.MaxValue;
             });
             services.AddControllers();
         }
@@ -54,9 +57,10 @@ namespace CandidatePortal
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthorization();
             app.UseCors("CorsApi");
+            app.UseFileServer();
+            app.UseDefaultFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

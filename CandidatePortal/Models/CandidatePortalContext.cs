@@ -61,6 +61,7 @@ namespace CandidatePortal.Models
         public virtual DbSet<BaseRequest> BaseRequest { get; set; }
 
         public virtual DbSet<ApplicantPersonalRequest> ApplicantPersonalRequest { get; set; }
+        public virtual DbSet<FileRequest> FileRequest { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

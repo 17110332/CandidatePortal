@@ -75,5 +75,32 @@ namespace CandidatePortal.Controllers
 
         }
 
+
+        [HttpPost("UploadFile")]
+        public object UploadFile([FromForm] FileRequest request)
+        {
+            //try
+            //{
+            //    var base64str = request.FileBase64;
+            //    return base64str;
+            //}
+            //catch
+            //{
+            //    return "";
+            //}
+          
+         //   var base64str = request.FileBase64;
+        //    byte[] newBytes = Convert.FromBase64String(base64str);//new System.Data.Linq.Binary(newBytes);
+
+            return 1;
+
+        }
+
+        //[HttpPost("UploadFile/{requestBase64Str}")]
+        //public object UploadFile(string requestBase64Str)
+        //{
+        //    var base64str = requestBase64Str;
+        //    return base64str;
+        //}
     }
 }
