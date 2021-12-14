@@ -19,20 +19,21 @@ namespace CandidatePortal.Controllers
     public class ApplicantController : Controller
     {
         CandidatePortalContext db = new CandidatePortalContext();
+        public static string SessionLoginStr;
         [HttpGet("GetApplicantByUserName/{sessionlogin}")]
         public object GetApplicantByUserName(string sessionlogin)
         {
-            //try
-            //{
-            //    var logininfo = db.NhmLogins.FirstOrDefault(n => n.SessionLogin == sessionlogin);
-            //    return db.ApplicantRequest.FromSqlRaw(@"select * from InfoApplicant where Username={0}", logininfo.UserName).ToList();
-            //}
-            //catch
-            //{
-            //    return null;
-            //}
-            var logininfo = db.NhmLogins.FirstOrDefault(n => n.SessionLogin == sessionlogin);
-            return db.ApplicantRequest.FromSqlRaw(@"select * from InfoApplicant where Username={0}", logininfo.UserName).ToList();
+            try
+            {
+                var logininfo = db.NhmLogins.FirstOrDefault(n => n.SessionLogin == sessionlogin);
+                SessionLoginStr = sessionlogin;
+                return db.ApplicantRequest.FromSqlRaw(@"select * from InfoApplicant where Username={0}", logininfo.UserName).ToList();
+            }
+            catch
+            {
+                return null;
+            }
+
 
         }
         [HttpPost("SaveInfoPersonal")]
@@ -59,12 +60,8 @@ namespace CandidatePortal.Controllers
                     WorkProgress={9},Skill={10},SkillOther={11} where ApplicantCode={0}";
 
                     db.Database.ExecuteSqlRaw(strupdatePersonal, request.ApplicantCode, request.Gender, request.Married, request.TitleDoc, request.IntroduceYourself,
-                    request.Level, request.School, request.Graduated, request.Exp, request.WorkProgress, request.Skill, request.SkillOther, request.Avatar, request.CVApplicant);
+                    request.Level, request.School, request.Graduated, request.Exp, request.WorkProgress, request.Skill, request.SkillOther);
                     return 1;
-                    //return db.ApplicantPersonalRequest.FromSqlRaw(@"exec NHM_UpdatePersonal {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}", 
-                    //    request.ApplicantCode, request.Gender, request.Married, request.TitleDoc, request.IntroduceYourself,
-                    //     request.Level, request.School, request.Graduated, request.Exp, request.WorkProgress, request.Skill, request.SkillOther, request.Avatar, request.CVApplicant);
-
                 }
                 return 0;
             }
@@ -72,35 +69,22 @@ namespace CandidatePortal.Controllers
             {
                 return -1;
             }
-
         }
 
 
         [HttpPost("UploadFile")]
         public object UploadFile([FromForm] FileRequest request)
         {
-            //try
-            //{
-            //    var base64str = request.FileBase64;
-            //    return base64str;
-            //}
-            //catch
-            //{
-            //    return "";
-            //}
-          
-         //   var base64str = request.FileBase64;
-        //    byte[] newBytes = Convert.FromBase64String(base64str);//new System.Data.Linq.Binary(newBytes);
-
-            return 1;
+            var username = db.NhmLogins.FirstOrDefault(n => n.SessionLogin == SessionLoginStr);
+            if (username != null)
+            {
+                var base64str = request.FileBase64;
+                var applicant = db.NhmApplicants.FirstOrDefault(n => n.Username == username.UserName);
+                db.Database.ExecuteSqlRaw("exec NHM_SPUpdateInfoPersonal {0},{1},{2},{3}", applicant.ApplicantCode, base64str,request.Options,request.FileName);
+                return 1;
+            }
+            return 0;
 
         }
-
-        //[HttpPost("UploadFile/{requestBase64Str}")]
-        //public object UploadFile(string requestBase64Str)
-        //{
-        //    var base64str = requestBase64Str;
-        //    return base64str;
-        //}
     }
 }

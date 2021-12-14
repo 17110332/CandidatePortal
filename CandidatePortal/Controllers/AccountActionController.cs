@@ -67,7 +67,7 @@ namespace CandidatePortal.Controllers
                 var logininfo = new NhmLogin();
                 logininfo.LoginTime = DateTime.Now;
                 logininfo.UserName = username;
-                logininfo.SessionLogin = Base64Encode(accountinfo.LastName + " " + accountinfo.LastName + "___+=()*" + username + "%$!" + password + "*@-" + (DateTime.Now).ToString());
+                logininfo.SessionLogin = Base64Encode(accountinfo.LastName + "FFF" + accountinfo.FirstName + "___+=()*" + username + "%$!" + password + "*@-" + (DateTime.Now).ToString()+"!@#$#@!"+accountinfo.TypeUser);
                 db.NhmLogins.Add(logininfo);
                 db.SaveChanges();
                 return logininfo;

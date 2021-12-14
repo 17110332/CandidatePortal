@@ -4,21 +4,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace CandidatePortal.Models
 {
-    public class FileRequest
+    public class FileStringBase64
     {
         [Key]
-        public int  FileID { get; set; }
-        public string FileName { get; set; }
-        public string FileSize { get; set; }
-        public string FileType { get; set; }
-        public byte[] File { get; set; }
-        public string FileBase64 { get; set; }
-        public int Options { get; set; }
+        public string FileBase64String { get; set; }
         // public IFormFile FileUpload { get; set; }
         //   public List<IFormFile> ListFileUpload { get; set; }
-
     }
 }

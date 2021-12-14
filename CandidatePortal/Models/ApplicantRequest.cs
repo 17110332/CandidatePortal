@@ -33,5 +33,6 @@ namespace CandidatePortal.Models
         public string WorkProgress { get; set; }
         public string Skill { get; set; }
         public string SkillOther { get; set; }
+        public string FileName { get; set; }
     }
 }
