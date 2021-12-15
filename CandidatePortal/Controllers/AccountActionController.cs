@@ -67,7 +67,7 @@ namespace CandidatePortal.Controllers
                 var logininfo = new NhmLogin();
                 logininfo.LoginTime = DateTime.Now;
                 logininfo.UserName = username;
-                logininfo.SessionLogin = Base64Encode(accountinfo.LastName + "FFF" + accountinfo.FirstName + "___+=()*" + username + "%$!" + password + "*@-" + (DateTime.Now).ToString()+"!@#$#@!"+accountinfo.TypeUser);
+                logininfo.SessionLogin = Base64Encode(accountinfo.ApplicantCode + "___+=()*" + username + "%$!" + password + "*@-" + (DateTime.Now).ToString()+"!@#$#@!"+accountinfo.TypeUser);
                 db.NhmLogins.Add(logininfo);
                 db.SaveChanges();
                 return logininfo;
@@ -75,6 +75,21 @@ namespace CandidatePortal.Controllers
             catch
             {
                 return -1;
+            }
+        }
+        [HttpGet("GetFullName/{ApplicantCode}")]
+        public object GetFullName(string ApplicantCode)
+        {
+            string fullname = "";
+            try
+            {
+                var applicant = db.NhmApplicants.FirstOrDefault(n => n.ApplicantCode == ApplicantCode);
+                fullname = applicant.FirstName + " " + applicant.LastName;
+                return fullname;
+            }
+            catch
+            {
+                return fullname;
             }
         }
     }
