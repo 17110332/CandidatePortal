@@ -129,5 +129,9 @@ namespace CandidatePortal.Controllers
                 return null;
             }
         }
+        public int RRR()
+        {
+            return 0;
+        }
     }
 }
