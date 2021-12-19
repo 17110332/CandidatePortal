@@ -129,6 +129,19 @@ namespace CandidatePortal.Controllers
                 return null;
             }
         }
+        [HttpGet("GetTop18JobRecruit")]
+        public IEnumerable<object> GetTop18JobRecruit()
+        {
+            //try
+            //{
+            //    return db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruitsNewestInTwoWeek").ToList();
+            //}
+            //catch
+            //{
+            //    return null;
+            //}
+            return db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruitsNewestInTwoWeek").ToList();
+        }
         [HttpPost("onLike")]
         public object onLike([FromForm] NhmRecruitsTMPWithUserID param)
         {
