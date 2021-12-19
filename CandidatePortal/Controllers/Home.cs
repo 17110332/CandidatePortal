@@ -40,11 +40,11 @@ namespace CandidatePortal.Controllers
                 DbType = System.Data.DbType.Int32,
                 Direction = System.Data.ParameterDirection.Output
             };
-            db.Database.ExecuteSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT", "vn", Condition, param.PageIndex, PageSize, TotalPage);
+       //     db.Database.ExecuteSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT", "vn", Condition, param.PageIndex, PageSize, TotalPage);
             return new
             {
-                lstJob = db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT", "vn",
-                   Condition, param.PageIndex, PageSize, TotalPage).ToList(),
+                lstJob = db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT,{5}", "vn",
+                   Condition, param.PageIndex, PageSize, TotalPage,param.ApplicantCode).ToList(),
                 PageSize = PageSize.Value.ToString(),
                 TotalPage = TotalPage.Value.ToString()
             };
@@ -129,9 +129,66 @@ namespace CandidatePortal.Controllers
                 return null;
             }
         }
-        public int RRR()
+        [HttpPost("onLike")]
+        public object onLike([FromForm] NhmRecruitsTMPWithUserID param)
         {
-            return 0;
+            try
+            {
+                var datacheck = db.NhmRecruitsTMPWithUserID.FromSqlRaw("select top(1) 1 as SL from NhmRecruitsTMPWithUserID where ApplicantCode={0} and RecruitID={1}", param.ApplicantCode, param.RecruitID);
+                if (datacheck.Count() > 0) // đã có rồi => đang like thì xóa đi
+                {
+                    return new
+                    {
+                        delete = db.Database.ExecuteSqlRaw(@"delete from NhmRecruitsTMPWithUserID where ApplicantCode = {0} and RecruitID={1}", param.ApplicantCode, param.RecruitID),
+                        type = "delete"
+                    };
+                }
+                else // chưa có=> chưa like thì like (thêm vào db)
+                {
+                    return new
+                    {
+                        insert = db.Database.ExecuteSqlRaw(@"insert into NhmRecruitsTMPWithUserID(ApplicantCode,RecruitID,Islike,Status) values ({0},{1},{2},{3})", param.ApplicantCode, param.RecruitID, true, 0),
+                        type = "insert"
+                    };
+
+                }
+            }
+            catch
+            {
+                return null;
+            }
+          
+        }
+
+        [HttpPost("onApply")]
+        public object onApply([FromForm] NhmRecruitsTMPWithUserID param)
+        {
+            try
+            {
+                var datacheck = db.NhmRecruitsTMPWithUserID.FromSqlRaw("select top(1) 1 as SL from NhmRecruitsTMPWithUserID where ApplicantCode={0} and Status in (1,4)", 
+                    param.ApplicantCode, param.RecruitID);
+                if (datacheck.Count() > 0) //đã là nv, hoặc đang trogn quy trình ứng tuyển 1 việc khác
+                {
+                    //cảnh báo đã là nv, hoặc đang trogn quy trình ứng tuyển 1 việc khác, ko dc apply việc này
+                    return new {
+                        error ="Đã là là nhân viên chính thức, hoặc đang trong quy trình ứng tuyển 1 việc khác. Bạn không thể ứng tuyển việc này!"
+                    };
+                }
+                else // chưa có=> chưa like thì like (thêm vào db)
+                {
+                    //them vào db và báo thành công
+                    return new
+                    {
+                        insert = db.Database.ExecuteSqlRaw(@"insert into NhmRecruitsTMPWithUserID(ApplicantCode,RecruitID,Islike,Status) values ({0},{1},{2},{3})", param.ApplicantCode, param.RecruitID, false, 1),
+                        success = "Ứng tuyển thành công"
+                    };
+                }
+            }
+            catch
+            {
+                return null;
+            }
+
         }
     }
 }

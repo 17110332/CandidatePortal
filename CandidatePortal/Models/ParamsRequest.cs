@@ -12,5 +12,6 @@ namespace CandidatePortal.Models
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int TotalPage { get; set; }
+        public string ApplicantCode { get; set; }
     }
 }

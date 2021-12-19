@@ -31,5 +31,6 @@ namespace CandidatePortal.Models
         public bool IsAgree { get; set; }
         public string FromSalary { get; set; }
         public string ToSalary { get; set; }
+        public int Liked { get; set; }
     }
 }

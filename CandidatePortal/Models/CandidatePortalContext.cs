@@ -63,7 +63,7 @@ namespace CandidatePortal.Models
         public virtual DbSet<ApplicantPersonalRequest> ApplicantPersonalRequest { get; set; }
         public virtual DbSet<FileRequest> FileRequest { get; set; }
         public virtual DbSet<FileStringBase64> FileStringBase64 { get; set; }
-
+        public virtual DbSet<NhmRecruitsTMPWithUserID> NhmRecruitsTMPWithUserID { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
