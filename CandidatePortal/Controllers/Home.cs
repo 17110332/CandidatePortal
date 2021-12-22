@@ -28,26 +28,34 @@ namespace CandidatePortal.Controllers
             //{
             //    return null;
             //}
-            var PageSize = new SqlParameter
+            try
             {
-                ParameterName = "PageSize",
-                DbType = System.Data.DbType.Int32,
-                Direction = System.Data.ParameterDirection.Output
-            };
-            var TotalPage = new SqlParameter
+                var PageSize = new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    DbType = System.Data.DbType.Int32,
+                    Direction = System.Data.ParameterDirection.Output
+                };
+                var TotalPage = new SqlParameter
+                {
+                    ParameterName = "TotalPage",
+                    DbType = System.Data.DbType.Int32,
+                    Direction = System.Data.ParameterDirection.Output
+                };
+                //     db.Database.ExecuteSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT", "vn", Condition, param.PageIndex, PageSize, TotalPage);
+                return new
+                {
+                    lstJob = db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT,{5}", "vn",
+                       Condition, param.PageIndex, PageSize, TotalPage, param.ApplicantCode).ToList(),
+                    PageSize = PageSize.Value.ToString(),
+                    TotalPage = TotalPage.Value.ToString()
+                };
+            }
+            catch
             {
-                ParameterName = "TotalPage",
-                DbType = System.Data.DbType.Int32,
-                Direction = System.Data.ParameterDirection.Output
-            };
-       //     db.Database.ExecuteSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT", "vn", Condition, param.PageIndex, PageSize, TotalPage);
-            return new
-            {
-                lstJob = db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruits {0},{1},{2},{3} OUT,{4} OUT,{5}", "vn",
-                   Condition, param.PageIndex, PageSize, TotalPage,param.ApplicantCode).ToList(),
-                PageSize = PageSize.Value.ToString(),
-                TotalPage = TotalPage.Value.ToString()
-            };
+                return null;
+            }
+           
         }
         [HttpGet("GetTypeJobW")]
         public IEnumerable<object> GetTypeJobW()
