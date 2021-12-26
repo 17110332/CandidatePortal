@@ -86,5 +86,30 @@ namespace CandidatePortal.Controllers
             return 0;
 
         }
+
+        [HttpGet("GetJobLikeOrApply/{ApplicantCode}/{IsLike}")]
+        public IEnumerable<object> GetJobLikeOrApply(string ApplicantCode,bool IsLike)
+        {
+            try
+            {
+                return db.NhmRecruitRequest.FromSqlRaw(@"exec Nhm_getJobLikeOrApply {0},{1}",ApplicantCode,IsLike).ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        [HttpGet("GetJobApplyingForApplicant/{ApplicantCode}")]
+        public IEnumerable<object> GetJobApplyingForApplicant(string ApplicantCode)
+        {
+            try
+            {
+                return db.NhmRecruitsTMPWithUserID.FromSqlRaw("select * from NhmRecruitsTMPWithUserID where ApplicantCode={0} and Status in (1,4)", ApplicantCode);
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

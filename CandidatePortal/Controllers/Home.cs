@@ -211,5 +211,18 @@ namespace CandidatePortal.Controllers
             }
 
         }
+        //lấy SL
+        [HttpGet("Count/{ApplicantCode}")]
+        public IEnumerable<object> Count(string ApplicantCode)
+        {
+            try
+            {
+                return db.CountRequest.FromSqlRaw(@"exec nhm_spGetViecLikeAndApply {0}", ApplicantCode).ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
