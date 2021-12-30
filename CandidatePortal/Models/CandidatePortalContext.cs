@@ -42,7 +42,7 @@ namespace CandidatePortal.Models
         public virtual DbSet<NhmChangePassword> NhmChangePasswordsRequest { get; set; }
         public virtual DbSet<NhmComboboxList> NhmComboboxListsRequest { get; set; }
         public virtual DbSet<NhmCvfile> NhmCvfilesRequest { get; set; }
-        public virtual DbSet<NhmDepartment> NhmDepartmentsRequest { get; set; }
+        public virtual DbSet<NhmDepartmentRequest> NhmDepartmentsRequest { get; set; }
         public virtual DbSet<NhmDistrict> NhmDistrictsRequest { get; set; }
         public virtual DbSet<NhmEmployee> NhmEmployeesRequest { get; set; }
         public virtual DbSet<NhmJobWorkingRequest> NhmJobWorkingRequest { get; set; }

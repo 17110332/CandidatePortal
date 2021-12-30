@@ -96,6 +96,20 @@ namespace CandidatePortal.Controllers
             }
         }
 
+        [HttpGet("GetDepartment")]
+        public IEnumerable<object> GetDepartment()
+        {
+            //try
+            //{
+            //    return db.NhmDepartmentsRequest.FromSqlRaw(@"select DepartmentCode,DepartmentName from NhmDepartments").ToList();
+            //}
+            //catch
+            //{
+            //    return null;
+            //}
+            return db.NhmDepartmentsRequest.FromSqlRaw(@"select DepartmentCode,DepartmentName from NhmDepartments").ToList();
+        }
+
 
         [HttpGet("GetRecruitDetail/{RecruitID:int}")]
         public object GetRecruitDetail(int RecruitID)
