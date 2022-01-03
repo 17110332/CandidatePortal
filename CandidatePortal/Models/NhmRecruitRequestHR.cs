@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CandidatePortal.Models
 {
-    public partial class NhmRecruitRequest
+    public partial class NhmRecruitRequestHR
     {
         [Key]
         public int RecruitID { get; set; }
@@ -17,8 +17,8 @@ namespace CandidatePortal.Models
         public string ProvinceName { get; set; }
         public string JobWCode { get; set; }
         public int? Quantity { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
         public bool? IsActive { get; set; }
         public byte[] Photo { get; set; }
         public DateTime? CreatedOn { get; set; }

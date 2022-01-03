@@ -33,8 +33,18 @@ namespace CandidatePortal.Controllers
             {
                 return null;
             }
-
-
+        }
+        [HttpGet("GetApplicantByApplicantCode/{ApplicantCode}")]
+        public object GetApplicantByApplicantCode(string ApplicantCode)
+        {
+            try
+            {
+                return db.ApplicantRequest.FromSqlRaw(@"select * from InfoApplicant where ApplicantCode={0}", ApplicantCode).ToList();
+            }
+            catch
+            {
+                return null;
+            }
         }
         [HttpPost("SaveInfoPersonal")]
         public object SaveInfoPersonal([FromForm] BaseRequest request)

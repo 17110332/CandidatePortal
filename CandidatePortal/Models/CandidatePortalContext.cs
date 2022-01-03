@@ -47,17 +47,20 @@ namespace CandidatePortal.Models
         public virtual DbSet<NhmEmployee> NhmEmployeesRequest { get; set; }
         public virtual DbSet<NhmJobWorkingRequest> NhmJobWorkingRequest { get; set; }
         public virtual DbSet<NhmRecruitDetailRequest> NhmRecruitDetailRequest { get; set; }
+        public virtual DbSet<NhmRecruitDetailRequestHR> NhmRecruitDetailRequestHR { get; set; }
         public virtual DbSet<Language> Language { get; set; }
         public virtual DbSet<NhmAccountRequest> NhmAccountRequest { get; set; }
         public virtual DbSet<NhmLoginRequest> NhmLoginsRequest { get; set; }
         public virtual DbSet<NhmPhoto> NhmPhotosRequest { get; set; }
         public virtual DbSet<NhmProvince> NhmProvincesRequest { get; set; }
         public virtual DbSet<NhmRecruitRequest> NhmRecruitRequest { get; set; }
+        public virtual DbSet<NhmRecruitRequestHR> NhmRecruitRequestHR { get; set; }
         public virtual DbSet<NhmTypeJobWorkingRequest> NhmTypeJobWorkingRequest { get; set; }
         public virtual DbSet<NhmValueList> NhmValueListsRequest { get; set; }
         public virtual DbSet<NhmWard> NhmWardsRequest { get; set; }
 
         public virtual DbSet<ApplicantRequest> ApplicantRequest { get; set; }
+        public virtual DbSet<ApplicantRequestHR> ApplicantRequestHR { get; set; }
         public virtual DbSet<BaseRequest> BaseRequest { get; set; }
 
         public virtual DbSet<ApplicantPersonalRequest> ApplicantPersonalRequest { get; set; }
@@ -441,7 +444,7 @@ namespace CandidatePortal.Models
                 entity.HasKey(e => e.JobWCode)
                     .HasName("PK__NHM_JobW__D338E992B2F64AC8");
 
-                entity.ToTable("NHM_JobWorking");
+                entity.ToTable("NhmJobWorkings");
 
                 entity.Property(e => e.JobWCode)
                     .HasMaxLength(20)
