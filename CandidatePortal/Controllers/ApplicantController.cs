@@ -121,5 +121,17 @@ namespace CandidatePortal.Controllers
                 return null;
             }
         }
+        [HttpGet("ResearchApply/{ApplicantCode}")]
+        public IEnumerable<object> ResearchApply(string ApplicantCode)
+        {
+            try
+            {
+                return db.NhmRecruitsTMPWithUserID.FromSqlRaw("select top(1) * from NhmRecruitsTMPWithUserID where ApplicantCode={0} AND ISLike=0", ApplicantCode);
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
