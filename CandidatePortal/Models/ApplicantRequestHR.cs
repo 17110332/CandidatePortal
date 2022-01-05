@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace CandidatePortal.Models
     public class ApplicantRequestHR
     {
         [Key]
+        [Column(Order = 1)]
         public string ApplicantCode { get; set; }
         public string FirstName { get; set; }
         public string Username { get; set; }
@@ -34,7 +36,11 @@ namespace CandidatePortal.Models
         public string Skill { get; set; }
         public string SkillOther { get; set; }
         public string FileName { get; set; }
+        [Key]
+        [Column(Order = 2)]
         public int RecruitID { get; set; }
+        [Key]
+        [Column(Order = 3)]
         public int Status { get; set; }
         public string JobWName { get; set; }
         public string TypeJobWName { get; set; }
