@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
 namespace CandidatePortal.Models
 {
-    public partial class NhmChangePassword
+    public class NhmChangePassword
     {
 
+        [Key]
         public int ID { get; set; }
         public string UserName { get; set; }
         public string PasswordOld { get; set; }

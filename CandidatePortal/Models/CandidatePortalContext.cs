@@ -18,6 +18,7 @@ namespace CandidatePortal.Models
         }
 
         public virtual DbSet<NhmApplicant> NhmApplicants { get; set; }
+        public virtual DbSet<AccountRequest> AccountRequest { get; set; }
         public virtual DbSet<NhmCandidate> NhmCandidates { get; set; }
         public virtual DbSet<NhmChangePassword> NhmChangePasswords { get; set; }
         public virtual DbSet<NhmComboboxList> NhmComboboxLists { get; set; }
@@ -25,6 +26,7 @@ namespace CandidatePortal.Models
         public virtual DbSet<NhmDepartment> NhmDepartments { get; set; }
         public virtual DbSet<NhmDistrict> NhmDistricts { get; set; }
         public virtual DbSet<NhmEmployee> NhmEmployees { get; set; }
+        public virtual DbSet<MailObject> MailObject { get; set; }
         public virtual DbSet<NhmJobWorking> NhmJobWorkings { get; set; }
         public virtual DbSet<NhmLogin> NhmLogins { get; set; }
         public virtual DbSet<NhmPhoto> NhmPhotos { get; set; }

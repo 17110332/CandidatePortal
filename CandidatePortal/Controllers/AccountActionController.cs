@@ -8,7 +8,7 @@ using CandidatePortal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using System.Web;
-
+using System.Net.Mail;
 namespace CandidatePortal.Controllers
 {
 
@@ -54,6 +54,49 @@ namespace CandidatePortal.Controllers
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
+        public object SendEmailController(string Message, string Email)
+        {
+
+            try
+            {
+                // Credentials
+                var credentials = new System.Net.NetworkCredential("17110332@student.hcmute.edu.vn", "QuietMy301020");
+
+                // Mail message
+                var mail = new System.Net.Mail.MailMessage()
+                {
+                    From = new MailAddress("17110332@student.hcmute.edu.vn"),
+                    Subject = "Công ty LV",
+                    Body = Message
+                };
+
+                mail.IsBodyHtml = true;
+                mail.To.Add(new MailAddress(Email));
+
+                // Smtp client
+                var client = new SmtpClient()
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = credentials
+                };
+                // client.UseDefaultCredentials = true;
+                client.Send(mail);
+
+                return new
+                {
+                    mess = "Email Sent Successfully!"
+                };
+            }
+            catch (System.Exception e)
+            {
+                return e.Message;
+            }
+
+        }
         [HttpPost("Login")]
         public object Login([FromForm] NhmApplicant request)
         {
@@ -90,6 +133,79 @@ namespace CandidatePortal.Controllers
             catch
             {
                 return fullname;
+            }
+        }
+
+        //đổi mật khẩu
+        [HttpPost("ChangePassword")]
+        public object ChangePassword([FromForm] AccountRequest request)
+        {
+            try
+            {
+                var obj = db.NhmApplicants.FirstOrDefault(n => n.Username == request.Username && n.Password == request.Password);
+                if(obj == null)
+                {
+                    return new
+                    {
+                        err = "Tài khoản hoặc mật khẩu không đúng"
+                    };
+                }
+                else
+                {
+                    obj.Password = request.NewPassword;
+                    db.NhmApplicants.Update(obj);
+
+                    //thêm vào bảng change pass
+                    var changepass = new NhmChangePassword();
+                    changepass.UserName = request.Username;
+                    changepass.PasswordOld = request.Password;
+                    changepass.PasswordNew = request.NewPassword;
+                    changepass.CreatedBy = request.Username;
+                    changepass.CreatedOn = DateTime.Now;
+                    db.NhmChangePasswords.Add(changepass);
+                    db.SaveChanges();
+                    return 1;
+                }
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+        //quên mật khẩu
+        //đổi mật khẩu
+        [HttpPost("ChangePassword")]
+        public object ChangePassword([FromForm] NhmApplicant request)
+        {
+            try
+            {
+                var obj = db.NhmApplicants.FirstOrDefault(n => n.Username==request.Username && n.Email==request.Email);
+                if (obj == null)
+                {
+                    return new
+                    {
+                        err = "Email hoặc tài khoản không đúng"
+                    };
+                }
+                else
+                {
+                    //thêm vào bảng change pass
+                    var changepass = new NhmChangePassword();
+                    changepass.UserName = request.Username;
+                    changepass.PasswordOld = obj.Password;
+                    changepass.PasswordNew = "123456"; // gen password
+                    changepass.CreatedBy = request.Username;
+                    changepass.CreatedOn = DateTime.Now;
+                    db.NhmChangePasswords.Add(changepass);
+                    obj.Password = changepass.PasswordNew;
+                    db.SaveChanges();
+                    SendEmailController("Đã gửi mật khẩu qua mail, vui lòng check mail", request.Email);
+                    return 1;
+                }
+            }
+            catch
+            {
+                return -1;
             }
         }
     }
