@@ -54,11 +54,8 @@ namespace CandidatePortal.Controllers
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
-        public object SendEmailController(string Message, string Email)
+        public void SendEmailController(string Message, string Email)
         {
-
-            try
-            {
                 // Credentials
                 var credentials = new System.Net.NetworkCredential("17110332@student.hcmute.edu.vn", "QuietMy301020");
 
@@ -85,17 +82,6 @@ namespace CandidatePortal.Controllers
                 };
                 // client.UseDefaultCredentials = true;
                 client.Send(mail);
-
-                return new
-                {
-                    mess = "Email Sent Successfully!"
-                };
-            }
-            catch (System.Exception e)
-            {
-                return e.Message;
-            }
-
         }
         [HttpPost("Login")]
         public object Login([FromForm] NhmApplicant request)
@@ -142,24 +128,21 @@ namespace CandidatePortal.Controllers
         {
             try
             {
-                var obj = db.NhmApplicants.FirstOrDefault(n => n.Username == request.Username && n.Password == request.Password);
+                var obj = db.NhmApplicants.FirstOrDefault(n => n.Username == request.Username && n.Password == Base64Decode(request.Password));
                 if(obj == null)
                 {
-                    return new
-                    {
-                        err = "Tài khoản hoặc mật khẩu không đúng"
-                    };
+                    return 0;
                 }
                 else
                 {
-                    obj.Password = request.NewPassword;
+                    obj.Password = Base64Decode(request.NewPassword);
                     db.NhmApplicants.Update(obj);
 
                     //thêm vào bảng change pass
                     var changepass = new NhmChangePassword();
                     changepass.UserName = request.Username;
-                    changepass.PasswordOld = request.Password;
-                    changepass.PasswordNew = request.NewPassword;
+                    changepass.PasswordOld = Base64Decode(request.Password);
+                    changepass.PasswordNew = Base64Decode(request.NewPassword);
                     changepass.CreatedBy = request.Username;
                     changepass.CreatedOn = DateTime.Now;
                     db.NhmChangePasswords.Add(changepass);
@@ -173,9 +156,8 @@ namespace CandidatePortal.Controllers
             }
         }
         //quên mật khẩu
-        //đổi mật khẩu
-        [HttpPost("ChangePassword")]
-        public object ChangePassword([FromForm] NhmApplicant request)
+        [HttpPost("ForgotPassword")]
+        public object ForgotPassword([FromForm] NhmApplicant request)
         {
             try
             {
@@ -199,7 +181,7 @@ namespace CandidatePortal.Controllers
                     db.NhmChangePasswords.Add(changepass);
                     obj.Password = changepass.PasswordNew;
                     db.SaveChanges();
-                    SendEmailController("Đã gửi mật khẩu qua mail, vui lòng check mail", request.Email);
+                    SendEmailController("Xin chào "+ request.Username +" , Mật khẩu mới của bạn là: "+ changepass.PasswordNew, request.Email);
                     return 1;
                 }
             }
