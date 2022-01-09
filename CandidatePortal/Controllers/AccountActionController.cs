@@ -171,17 +171,21 @@ namespace CandidatePortal.Controllers
                 }
                 else
                 {
+                    //random password
+                    Random generator = new Random();
+                    String passwordRandom = generator.Next(0, 1000000).ToString("D6");
+
                     //thêm vào bảng change pass
                     var changepass = new NhmChangePassword();
                     changepass.UserName = request.Username;
                     changepass.PasswordOld = obj.Password;
-                    changepass.PasswordNew = "123456"; // gen password
+                    changepass.PasswordNew = passwordRandom; // gen password
                     changepass.CreatedBy = request.Username;
                     changepass.CreatedOn = DateTime.Now;
                     db.NhmChangePasswords.Add(changepass);
                     obj.Password = changepass.PasswordNew;
                     db.SaveChanges();
-                    SendEmailController("Xin chào "+ request.Username +" , Mật khẩu mới của bạn là: "+ changepass.PasswordNew, request.Email);
+                    SendEmailController("Xin chào "+ obj.FirstName +" "+obj.LastName +" , Mật khẩu mới của bạn là: "+ changepass.PasswordNew, request.Email);
                     return 1;
                 }
             }
