@@ -95,19 +95,31 @@ namespace CandidatePortal.Controllers
                 return null;
             }
         }
+        [HttpGet("GetProvincesHome")]
+        public IEnumerable<object> GetProvincesHome()
+        {
+            try
+            {
+                return db.NhmProvinceRequest.FromSqlRaw(@"exec GetProvincesHome").ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         [HttpGet("GetDepartment")]
         public IEnumerable<object> GetDepartment()
         {
-            //try
-            //{
-            //    return db.NhmDepartmentsRequest.FromSqlRaw(@"select DepartmentCode,DepartmentName from NhmDepartments").ToList();
-            //}
-            //catch
-            //{
-            //    return null;
-            //}
-            return db.NhmDepartmentsRequest.FromSqlRaw(@"select DepartmentCode,DepartmentName from NhmDepartments").ToList();
+            try
+            {
+                return db.NhmDepartmentsRequest.FromSqlRaw(@"select DepartmentCode,DepartmentName from NhmDepartments").ToList();
+            }
+            catch
+            {
+                return null;
+            }
+            //  return db.NhmDepartmentsRequest.FromSqlRaw(@"select DepartmentCode,DepartmentName from NhmDepartments").ToList();
         }
 
 
@@ -154,15 +166,15 @@ namespace CandidatePortal.Controllers
         [HttpGet("GetTop18JobRecruit")]
         public IEnumerable<object> GetTop18JobRecruit()
         {
-            //try
-            //{
-            //    return db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruitsNewestInTwoWeek").ToList();
-            //}
-            //catch
-            //{
-            //    return null;
-            //}
-            return db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruitsNewestInTwoWeek").ToList();
+            try
+            {
+                return db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruitsNewestInTwoWeek").ToList();
+            }
+            catch
+            {
+                return null;
+            }
+         //   return db.NhmRecruitRequest.FromSqlRaw(@"exec NHM_GetRecruitsNewestInTwoWeek").ToList();
         }
         [HttpPost("onLike")]
         public object onLike([FromForm] NhmRecruitsTMPWithUserID param)
